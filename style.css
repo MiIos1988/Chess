@@ -1,0 +1,27 @@
+.field{
+    height: 80px;
+    width: 80px;
+}
+.chess{
+    border: 1px solid black;
+    /* display: block; */
+
+}
+.chess > div{
+    display: flex;
+}
+.dark{
+    background-color: rgb(205, 130, 16);
+    border: 1px solid white;
+}
+.bright {
+    background-color: rgb(229, 222, 211);
+    border: 1px solid white;
+}
+.colorField{
+    background-color: rgb(36, 248, 195);
+    border: 1px solid rgb(43, 177, 144);
+} 
+.content{
+    display: flex;
+}
