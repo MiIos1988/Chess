@@ -1,13 +1,16 @@
-let matrica = [
-  [0, 0, 0, 0, 1, 0, 0, 0],
+const matrica = [
+  [7, 8, 9, 10, 11, 9, 8, 7],
+  [12, 12, 12, 12, 12, 12, 12, 12],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 0, 0, 1, 0, 0, 1],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 1, 0, 0, 0],
+  [6, 6, 6, 6, 6, 6, 6, 6],
+  [1, 2, 3, 4, 5, 3, 2, 1],
 ];
+let playWhite = true;
+let playBlack = false;
+
 function loadChess() {
   const chess = document.querySelector(".chess");
   chess.innerHTML = "";
@@ -31,111 +34,1642 @@ function loadChess() {
       }
 
       showFigure(i, j, field);
-      // console.log(i,j)
-      field.addEventListener("click", () => {
-        moveFigure(i, j, field);
-      });
+      addClickListenerToField(onFieldClick, i, j);
     }
   }
 }
 
 loadChess();
-
-function moveFigure(i, j, field) {
-  // console.log(i, j, field)
-  let blueField = document.querySelectorAll(".field");
-  for (const allBlueField of blueField) {
-    allBlueField.classList.remove("colorField");
+//CRNE FIGURE - SLOBODNA POLJA *******************************************************************************************************************************************
+//***Slobodna polja CRNI TOP************************************************** */
+function getRockFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i - 1; a >= 0; a--) {
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
   }
-  field.classList.add("colorField");
+
+  for (let a = i + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= 0; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+/***********Slobodna polja CRNA DAMA ******************************************/
+function getBlackQueenFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i - 1; a >= 0; a--) {
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + j);
+
+      if (matrica[a][j] != 0) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = i + 1; a <= 7; a++) {
+    // console.log(a, j);
+
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= 0; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  let b = j;
+  for (let a = i - 1; a >= 0; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] > 6) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (c === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] > 6) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (d === 0) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] > 6) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a <= 7; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] > 6) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja CRNI LOVAC *****************************/
+function getBlackBishopFreeFields(i, j) {
+  const allowedFields = [];
+
+  let b = j;
+  for (let a = i - 1; a >= 0; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] > 6) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (c === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] > 6) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (d === 0) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] > 6) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a <= 7; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] > 6) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+/***********Slobodna polja CRNI KRALJ ******************************************/
+function getBlackKingFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + j);
+
+      if (matrica[a][j] != 0) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] > 6) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= j - 1; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= j + 1; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] > 6) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  let b = j;
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] > 6) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (j <= 7) {
+      if (i === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] > 6) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (i <= 7) {
+      if (i === 7) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] > 6) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] > 6) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja CRNI KONJ *****************************/
+function getBlackKnightFreeFields(i, j) {
+  const allowedFields = [];
+
+  let b = j;
+  let a = i - 2;
+  if (i >= 0) {
+    if (b === 7) {
+    }
+    b--;
+  }
+  if (a >= 0) {
+    let allowMove = document.querySelector(".position" + a + b);
+    if (matrica[a][b] != 0) {
+      if (matrica[a][b] > 6) {
+        allowedFields.push({ i: a, j: b });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: a, j: b });
+    }
+  }
+
+  let bb = j;
+  let aa = i - 2;
+  if (i >= 0) {
+    if (bb === 7) {
+    }
+    bb++;
+  }
+  if (aa >= 0) {
+    let allowMove = document.querySelector(".position" + aa + bb);
+    if (matrica[aa][bb] != 0) {
+      if (matrica[aa][bb] > 6) {
+        allowedFields.push({ i: aa, j: bb });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: aa, j: bb });
+    }
+  }
+
+  let bc = j;
+  let ac = i + 2;
+  if (i <= 7) {
+    if (ac > 7) {
+      // console.log("sta se dogadja");
+      ac = i;
+    }
+    bc--;
+  }
+  if (ac >= 0) {
+    let allowMove = document.querySelector(".position" + ac + bc);
+    if (matrica[ac][bc] != 0) {
+      if (matrica[ac][bc] > 6) {
+        allowedFields.push({ i: ac, j: bc });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ac, j: bc });
+    }
+  }
+
+  let bd = j;
+  let ad = i + 2;
+  if (i <= 7) {
+    if (ad > 7) {
+      ad = i;
+    }
+    bd++;
+  }
+  if (ad >= 0) {
+    let allowMove = document.querySelector(".position" + ad + bd);
+    if (matrica[ad][bd] != 0) {
+      if (matrica[ad][bd] > 6) {
+        allowedFields.push({ i: ad, j: bd });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ad, j: bd });
+    }
+  }
+
+  let c = j;
+  let g = i - 1;
+  if (i <= 7) {
+    if (g > 7) {
+      // g = i - 2;
+    }
+    c = c + 2;
+  }
+  if (g >= 0) {
+    let allowMove = document.querySelector(".position" + g + c);
+    if (matrica[g][c] != 0) {
+      if (matrica[g][c] > 6) {
+        allowedFields.push({ i: g, j: c });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: g, j: c });
+    }
+  }
+
+  let d = j;
+  let h = i - 1;
+  if (i <= 7) {
+    if (h > 7) {
+    }
+    d = d - 2;
+  }
+  if (h >= 0) {
+    let allowMove = document.querySelector(".position" + h + d);
+    if (matrica[h][d] != 0) {
+      if (matrica[h][d] > 6) {
+        allowedFields.push({ i: h, j: d });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: h, j: d });
+    }
+  }
+
+  let e = j;
+  let ha = i + 1;
+  if (i <= 7) {
+    if (ha > 7) {
+      ha = i;
+    }
+    e = e - 2;
+  }
+  if (ha >= 0) {
+    let allowMove = document.querySelector(".position" + ha + e);
+    if (matrica[ha][e] != 0) {
+      if (matrica[ha][e] > 6) {
+        allowedFields.push({ i: ha, j: e });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ha, j: e });
+    }
+  }
+
+  let f = j;
+  let hb = i + 1;
+  if (i <= 7) {
+    if (hb > 7) {
+      hb = i;
+    }
+    f = f + 2;
+  }
+  if (hb >= 0) {
+    let allowMove = document.querySelector(".position" + hb + f);
+    if (matrica[hb][f] != 0) {
+      if (matrica[hb][f] > 6) {
+        allowedFields.push({ i: hb, j: f });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: hb, j: f });
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja CRNI PESAK *****************************/
+function getBlackPawnFreeFields(i, j) {
+  const allowedFields = [];
+  if (i === 6) {
+    for (let a = i - 1; a >= i - 2; a--) {
+      if (a >= 0) {
+        let allowMove = document.querySelector(".position" + a + j);
+        if (matrica[a][j] !== 0) {
+          break;
+        } else {
+          allowMove.classList.add("colorField");
+          allowedFields.push({ i: a, j });
+        }
+      }
+    }
+  } else {
+    for (let a = i - 1; a >= i - 1; a--) {
+      if (a >= 0) {
+        let allowMove = document.querySelector(".position" + a + j);
+        if (matrica[a][j] !== 0) {
+          break;
+        } else {
+          allowMove.classList.add("colorField");
+          allowedFields.push({ i: a, j });
+        }
+      }
+    }
+  }
+  let ha = i - 1;
+  if (ha === -1) {
+    ha = 0;
+  }
+  if (matrica[ha][j - 1] !== 0) {
+    const allowMove = document.querySelector(".position" + ha + (j - 1));
+    if (matrica[i][j] === 6) {
+      if (matrica[ha][j - 1] > 6) {
+        if (i === 0) {
+        } else {
+          allowedFields.push({ i: ha, j: j - 1 });
+          allowMove.classList.add("colorField");
+        }
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i, j });
+    }
+  }
+
+  let hb = i - 1;
+  if (hb === -1) {
+    hb = 0;
+  }
+  if (matrica[hb][j + 1] !== 0) {
+    const allowMove = document.querySelector(".position" + hb + (j + 1));
+    if (matrica[i][j] === 6) {
+      if (i === 0) {
+      } else {
+        if (matrica[hb][j + 1] > 6) {
+          allowedFields.push({ i: hb, j: j + 1 });
+          allowMove.classList.add("colorField");
+        }
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i, j });
+    }
+  }
+
+  return allowedFields;
+}
+//***************************************************************************************************************************************** */
+
+//SLOBODNA POLJA BELI *********************************************************************************************************************
+
+//***Slobodna polja BELI TOP************************************************** */
+function getWhiteRockFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i + 1; a <= 7; a++) {
+    if (a <= 7) {
+      let allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = i - 1; a >= 0; a--) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= 0; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+/***********Slobodna polja BELA DAMA ******************************************/
+function getWhiteQueenFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i - 1; a >= 0; a--) {
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + j);
+
+      if (matrica[a][j] != 0) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = i + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= 0; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= 7; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  let b = j;
+  for (let a = i - 1; a >= 0; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] < 7) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (c === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] < 7) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (d === 0) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] < 7) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a <= 7; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] < 7) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja BELI LOVAC *****************************/
+function getWhiteBishopFreeFields(i, j) {
+  const allowedFields = [];
+
+  let b = j;
+  for (let a = i - 1; a >= 0; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] < 7) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (c === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] < 7) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= 7; a++) {
+    if (j <= 7) {
+      if (d === 0) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] < 7) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a <= 7; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] < 7) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+/***********Slobodna polja BELI KRALJ ******************************************/
+function getWhiteKingFreeFields(i, j) {
+  const allowedFields = [];
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + j);
+
+      if (matrica[a][j] != 0) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + a + j);
+      if (matrica[a][j]) {
+        if (matrica[a][j] < 7) {
+          allowedFields.push({ i: a, j });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j });
+      }
+    }
+  }
+
+  for (let a = j - 1; a >= j - 1; a--) {
+    if (a >= 0) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  for (let a = j + 1; a <= j + 1; a++) {
+    if (a <= 7) {
+      const allowMove = document.querySelector(".position" + i + a);
+      if (matrica[i][a]) {
+        if (matrica[i][a] < 7) {
+          allowedFields.push({ i, j: a });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i, j: a });
+      }
+    }
+  }
+
+  let b = j;
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (i >= 0) {
+      if (b === 7) {
+        break;
+      }
+      b++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + b);
+      if (matrica[a][b] != 0) {
+        if (matrica[a][b] < 7) {
+          allowedFields.push({ i: a, j: b });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: b });
+      }
+    }
+  }
+
+  let c = j;
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (j <= 7) {
+      if (i === 7) {
+        break;
+      }
+      c++;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + c);
+      if (matrica[a][c] != 0) {
+        if (matrica[a][c] < 7) {
+          allowedFields.push({ i: a, j: c });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: c });
+      }
+    }
+  }
+
+  let d = j;
+  for (let a = i + 1; a <= i + 1; a++) {
+    if (i <= 7) {
+      if (i === 7) {
+        break;
+      }
+      d--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + d);
+      if (matrica[a][d] != 0) {
+        if (matrica[a][d] < 7) {
+          allowedFields.push({ i: a, j: d });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: d });
+      }
+    }
+  }
+
+  let e = j;
+  for (let a = i - 1; a >= i - 1; a--) {
+    if (j <= 7) {
+      if (e === 0) {
+        break;
+      }
+      e--;
+    }
+    if (a >= 0) {
+      let allowMove = document.querySelector(".position" + a + e);
+      if (matrica[a][e] != 0) {
+        if (matrica[a][e] < 7) {
+          allowedFields.push({ i: a, j: e });
+          allowMove.classList.add("colorField");
+        }
+        break;
+      } else {
+        allowMove.classList.add("colorField");
+        allowedFields.push({ i: a, j: e });
+      }
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja BELI KONJ *****************************/
+function getWhiteKnightFreeFields(i, j) {
+  const allowedFields = [];
+
+  let b = j;
+  let a = i - 2;
+  if (i >= 0) {
+    if (b === 7) {
+    }
+    b--;
+  }
+  if (a >= 0) {
+    let allowMove = document.querySelector(".position" + a + b);
+    if (matrica[a][b] != 0) {
+      if (matrica[a][b] < 7) {
+        allowedFields.push({ i: a, j: b });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: a, j: b });
+    }
+  }
+
+  let bb = j;
+  let aa = i - 2;
+  if (i >= 0) {
+    if (bb === 7) {
+    }
+    bb++;
+  }
+  if (aa >= 0) {
+    let allowMove = document.querySelector(".position" + aa + bb);
+    if (matrica[aa][bb] != 0) {
+      if (matrica[aa][bb] < 7) {
+        allowedFields.push({ i: aa, j: bb });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: aa, j: bb });
+    }
+  }
+
+  let bc = j;
+  let ac = i + 2;
+  if (i <= 7) {
+    if (ac > 7) {
+      ac = i - 2;
+    }
+    bc--;
+  }
+  if (ac >= 0) {
+    let allowMove = document.querySelector(".position" + ac + bc);
+    if (matrica[ac][bc] != 0) {
+      if (matrica[ac][bc] < 7) {
+        allowedFields.push({ i: ac, j: bc });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ac, j: bc });
+    }
+  }
+
+  let bd = j;
+  let ad = i + 2;
+  if (i <= 7) {
+    if (ad > 7) {
+      ad = i - 2;
+    }
+    bd++;
+  }
+  if (ad >= 0) {
+    let allowMove = document.querySelector(".position" + ad + bd);
+    if (matrica[ad][bd] != 0) {
+      if (matrica[ad][bd] < 7) {
+        allowedFields.push({ i: ad, j: bd });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ad, j: bd });
+    }
+  }
+
+  let c = j;
+  let g = i - 1;
+  if (i <= 7) {
+    if (g > 7) {
+      // g = i - 2;
+    }
+    c = c + 2;
+  }
+  if (g >= 0) {
+    let allowMove = document.querySelector(".position" + g + c);
+    if (matrica[g][c] != 0) {
+      if (matrica[g][c] < 7) {
+        allowedFields.push({ i: g, j: c });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: g, j: c });
+    }
+  }
+
+  let d = j;
+  let h = i - 1;
+  if (i <= 7) {
+    if (h > 7) {
+    }
+    d = d - 2;
+  }
+  if (h >= 0) {
+    let allowMove = document.querySelector(".position" + h + d);
+    if (matrica[h][d] != 0) {
+      if (matrica[h][d] < 7) {
+        allowedFields.push({ i: h, j: d });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: h, j: d });
+    }
+  }
+
+  let e = j;
+  let ha = i + 1;
+  if (i <= 7) {
+    if (ha > 7) {
+      ha = i - 1;
+    }
+    e = e - 2;
+  }
+  if (ha >= 0) {
+    let allowMove = document.querySelector(".position" + ha + e);
+    if (matrica[ha][e] != 0) {
+      if (matrica[ha][e] < 7) {
+        allowedFields.push({ i: ha, j: e });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: ha, j: e });
+    }
+  }
+
+  let f = j;
+  let hb = i + 1;
+  if (i <= 7) {
+    if (hb > 7) {
+      hb = i - 1;
+    }
+    f = f + 2;
+  }
+  if (hb >= 0) {
+    let allowMove = document.querySelector(".position" + hb + f);
+    if (matrica[hb][f] != 0) {
+      if (matrica[hb][f] < 7) {
+        allowedFields.push({ i: hb, j: f });
+        allowMove.classList.add("colorField");
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i: hb, j: f });
+    }
+  }
+
+  return allowedFields;
+}
+
+//****slobodna polja BELI PESAK *****************************/
+function getWhitePawnFreeFields(i, j) {
+  const allowedFields = [];
+  if (i === 1) {
+    for (let a = i + 1; a <= i + 2; a++) {
+      if (a >= 0) {
+        let allowMove = document.querySelector(".position" + a + j);
+        if (matrica[a][j] !== 0) {
+          break;
+        } else {
+          allowMove.classList.add("colorField");
+          allowedFields.push({ i: a, j });
+        }
+      }
+    }
+  } else {
+    let he = i + 1;
+    if (he === 8) {
+      he = 7;
+    }
+    for (let a = he; a <= he; a++) {
+      if (a >= 0) {
+        let allowMove = document.querySelector(".position" + a + j);
+        if (matrica[a][j] !== 0) {
+          break;
+        } else {
+          allowMove.classList.add("colorField");
+          allowedFields.push({ i: a, j });
+        }
+      }
+    }
+  }
+  let ha = i + 1;
+  if (ha === 8) {
+    ha = 7;
+  }
+  if (matrica[ha][j - 1] !== 0) {
+    const allowMove = document.querySelector(".position" + ha + (j - 1));
+    if (matrica[i][j] === 12) {
+      if (matrica[ha][j - 1] < 7) {
+        if (i === 7) {
+        } else {
+          allowedFields.push({ i: ha, j: j - 1 });
+          allowMove.classList.add("colorField");
+        }
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i, j });
+    }
+  }
+
+  let hb = i + 1;
+  if (hb === 8) {
+    hb = 7;
+  }
+  if (matrica[hb][j + 1] !== 0) {
+    const allowMove = document.querySelector(".position" + hb + (j + 1));
+    if (matrica[i][j] === 12) {
+      if (matrica[hb][j + 1] < 7) {
+        if (i === 7) {
+        } else {
+          allowedFields.push({ i: hb, j: j + 1 });
+          allowMove.classList.add("colorField");
+        }
+      }
+    } else {
+      allowMove.classList.add("colorField");
+      allowedFields.push({ i, j });
+    }
+  }
+
+  return allowedFields;
+}
+
+//************************************************************************************************************************************** */
+
+function addClickListenerToField(listener, i, j, ...params) {
+  const field = document.querySelector(".position" + i + j);
+  field.addEventListener("click", () => {
+    listener(i, j, ...params);
+  });
+}
+
+function onFieldClick(i, j) {
   loadChess();
+  const field = document.querySelector(".position" + i + j);
+  field.classList.add("colorField");
+  let gameQueueWhite = true;
+  let gameQueueBleck = false;
 
-  // CRNI TOP   *************************************************
-  if (matrica[i][j] === 1 && field.classList.contains("colorField")) {
-    for (let a = 0; a <= i; a++) {
-      console.log(i)
-      let allowMove = document.querySelector(".position" + a + j);
-      allowMove.classList.add("colorField");
-      allowMove.addEventListener("click", () => {
-        moveRook(a, j, i, j, field, allowMove);
-      });
+  if (playBlack) {
+    //CRNE FIGURE*******************************************************************************************************************************
+    // CRNI TOP   *************************************************
+    if (matrica[i][j] === 1) {
+      const freeFields = getRockFreeFields(i, j);
 
-      if (field.classList.contains("darkFigure")) {
-        let allDarkFigure = document.querySelectorAll(".darkFigure");
-        for (const blockDarkFigure of allDarkFigure) {
-          blockDarkFigure.classList.remove("colorField");
-        }
-        allowMove.classList.add("colorField");
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 1);
       }
     }
 
-    for (let a = 7; a >= i; a--) {
-      let allowMove = document.querySelector(".position" + a + j);
-      allowMove.classList.remove("colorField");
-      allowMove.classList.add("colorField");
+    //**CRNA DAMA************************************************************* */
 
-      allowMove.addEventListener("click", () => {
-        console.log(allowMove);
-        moveRook(a, j, i, j, field, allowMove);
-      });
+    if (matrica[i][j] === 4) {
+      const freeFields = getBlackQueenFreeFields(i, j);
 
-      if (field.classList.contains("darkFigure")) {
-        let allDarkFigure = document.querySelectorAll(".darkFigure");
-        for (const blockDarkFigure of allDarkFigure) {
-          blockDarkFigure.classList.remove("colorField");
-        }
-        allowMove.classList.add("colorField");
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 4);
       }
     }
 
-    for (let a = 0; a <= j; a++) {
-      let allowMove = document.querySelector(".position" + i + a);
-      allowMove.classList.remove("colorField");
-      allowMove.classList.add("colorField");
+    //**CRNI LOVAC************************************************************* */
 
-      allowMove.addEventListener("click", () => {
-        moveRook(i, a, i, j, field, allowMove);
-        // console.log(i, a, i, j);
-      });
+    if (matrica[i][j] === 3) {
+      const freeFields = getBlackBishopFreeFields(i, j);
 
-      if (field.classList.contains("darkFigure")) {
-        let allDarkFigure = document.querySelectorAll(".darkFigure");
-        for (const blockDarkFigure of allDarkFigure) {
-          blockDarkFigure.classList.remove("colorField");
-        }
-        allowMove.classList.add("colorField");
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 3);
       }
     }
+    //**CRNI KRALJ************************************************************* */
 
-    for (let a = 7; a >= j; a--) {
-      let allowMove = document.querySelector(".position" + i + a);
-      allowMove.classList.remove("colorField");
-      allowMove.classList.add("colorField");
+    if (matrica[i][j] === 5) {
+      const freeFields = getBlackKingFreeFields(i, j);
 
-      allowMove.addEventListener("click", () => {
-        moveRook(i, a, i, j, field, allowMove);
-      });
-
-      if (field.classList.contains("darkFigure")) {
-        let allDarkFigure = document.querySelectorAll(".darkFigure");
-        for (const blockDarkFigure of allDarkFigure) {
-          blockDarkFigure.classList.remove("colorField");
-        }
-        allowMove.classList.add("colorField");
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 5);
       }
     }
-    //*************************************************************************** */
+    //**CRNI KONJ************************************************************* */
+
+    if (matrica[i][j] === 2) {
+      const freeFields = getBlackKnightFreeFields(i, j);
+
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 2);
+      }
+    }
+    //*CRNI PESAK******************************************************************** */
+    if (matrica[i][j] === 6) {
+      const freeFields = getBlackPawnFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 6);
+      }
+    }
+  }
+  //******************************************************************************************************************************************** */
+  if (playWhite) {
+    //BELE FIGURE ***************************************************************************************************************************
+    // BELI TOP   *************************************************
+
+    if (matrica[i][j] === 7) {
+      const freeFields = getWhiteRockFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 7);
+      }
+    }
+    //**BELA DAMA************************************************************* */
+
+    if (matrica[i][j] === 10) {
+      const freeFields = getWhiteQueenFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 10);
+      }
+      //*************************************************************************** */
+    }
+
+    //**BELI LOVAC************************************************************* */
+
+    if (matrica[i][j] === 9) {
+      const freeFields = getWhiteBishopFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 9);
+      }
+      //*************************************************************************** */
+    }
+    //**BELI KRALJ************************************************************* */
+
+    if (matrica[i][j] === 11) {
+      const freeFields = getWhiteKingFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 11);
+      }
+      //*************************************************************************** */
+    }
+    //**BELI KONJ************************************************************* */
+
+    if (matrica[i][j] === 8) {
+      const freeFields = getWhiteKnightFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 8);
+      }
+      //*************************************************************************** */
+    }
+    if (matrica[i][j] === 12) {
+      const freeFields = getWhitePawnFreeFields(i, j);
+      for (const obj of freeFields) {
+        addClickListenerToField(move, obj.i, obj.j, i, j, 12);
+      }
+      //*************************************************************************** */
+    }
   }
 }
-//Kretanje crnog topa**************************************************************
-function moveRook(b, c, i, j, field, allowMove) {
-  if (allowMove.classList.contains("darkFigure") === false) {
-    // console.log(b, c, i, j)
-    matrica[i][j] = 0;
-    matrica[b][c] = 1;
 
-    loadChess();
+//***************************************************************************************************************************************** */
+
+//Kretanje **************************************************************
+function move(b, c, i, j, figure) {
+  matrica[i][j] = 0;
+  matrica[b][c] = figure;
+
+  if (playWhite) {
+    playWhite = false;
+    playBlack = true;
+  } else {
+    playWhite = true;
+    playBlack = false;
   }
+  loadChess();
 }
 
 //Slike figura************************************************************************
