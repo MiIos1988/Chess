@@ -40,8 +40,8 @@ function loadChess() {
 }
 
 loadChess();
-//CRNE FIGURE - SLOBODNA POLJA *******************************************************************************************************************************************
-//***Slobodna polja CRNI TOP************************************************** */
+
+
 function getRockFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i - 1; a >= 0; a--) {
@@ -110,7 +110,6 @@ function getRockFreeFields(i, j) {
 
   return allowedFields;
 }
-/***********Slobodna polja CRNA DAMA ******************************************/
 function getBlackQueenFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i - 1; a >= 0; a--) {
@@ -131,7 +130,6 @@ function getBlackQueenFreeFields(i, j) {
   }
 
   for (let a = i + 1; a <= 7; a++) {
-    // console.log(a, j);
 
     if (a <= 7) {
       const allowMove = document.querySelector(".position" + a + j);
@@ -275,7 +273,6 @@ function getBlackQueenFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja CRNI LOVAC *****************************/
 function getBlackBishopFreeFields(i, j) {
   const allowedFields = [];
 
@@ -374,7 +371,6 @@ function getBlackBishopFreeFields(i, j) {
   return allowedFields;
 }
 
-/***********Slobodna polja CRNI KRALJ ******************************************/
 function getBlackKingFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i - 1; a >= i - 1; a--) {
@@ -537,7 +533,6 @@ function getBlackKingFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja CRNI KONJ *****************************/
 function getBlackKnightFreeFields(i, j) {
   const allowedFields = [];
 
@@ -585,7 +580,6 @@ function getBlackKnightFreeFields(i, j) {
   let ac = i + 2;
   if (i <= 7) {
     if (ac > 7) {
-      // console.log("sta se dogadja");
       ac = i;
     }
     bc--;
@@ -628,7 +622,6 @@ function getBlackKnightFreeFields(i, j) {
   let g = i - 1;
   if (i <= 7) {
     if (g > 7) {
-      // g = i - 2;
     }
     c = c + 2;
   }
@@ -710,7 +703,6 @@ function getBlackKnightFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja CRNI PESAK *****************************/
 function getBlackPawnFreeFields(i, j) {
   const allowedFields = [];
   if (i === 6) {
@@ -780,11 +772,6 @@ function getBlackPawnFreeFields(i, j) {
 
   return allowedFields;
 }
-//***************************************************************************************************************************************** */
-
-//SLOBODNA POLJA BELI *********************************************************************************************************************
-
-//***Slobodna polja BELI TOP************************************************** */
 function getWhiteRockFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i + 1; a <= 7; a++) {
@@ -853,7 +840,6 @@ function getWhiteRockFreeFields(i, j) {
 
   return allowedFields;
 }
-/***********Slobodna polja BELA DAMA ******************************************/
 function getWhiteQueenFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i - 1; a >= 0; a--) {
@@ -1016,7 +1002,6 @@ function getWhiteQueenFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja BELI LOVAC *****************************/
 function getWhiteBishopFreeFields(i, j) {
   const allowedFields = [];
 
@@ -1115,7 +1100,6 @@ function getWhiteBishopFreeFields(i, j) {
   return allowedFields;
 }
 
-/***********Slobodna polja BELI KRALJ ******************************************/
 function getWhiteKingFreeFields(i, j) {
   const allowedFields = [];
   for (let a = i - 1; a >= i - 1; a--) {
@@ -1278,7 +1262,6 @@ function getWhiteKingFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja BELI KONJ *****************************/
 function getWhiteKnightFreeFields(i, j) {
   const allowedFields = [];
 
@@ -1368,7 +1351,6 @@ function getWhiteKnightFreeFields(i, j) {
   let g = i - 1;
   if (i <= 7) {
     if (g > 7) {
-      // g = i - 2;
     }
     c = c + 2;
   }
@@ -1450,7 +1432,6 @@ function getWhiteKnightFreeFields(i, j) {
   return allowedFields;
 }
 
-//****slobodna polja BELI PESAK *****************************/
 function getWhitePawnFreeFields(i, j) {
   const allowedFields = [];
   if (i === 1) {
@@ -1525,7 +1506,6 @@ function getWhitePawnFreeFields(i, j) {
   return allowedFields;
 }
 
-//************************************************************************************************************************************** */
 
 function addClickListenerToField(listener, i, j, ...params) {
   const field = document.querySelector(".position" + i + j);
@@ -1542,8 +1522,6 @@ function onFieldClick(i, j) {
   let gameQueueBleck = false;
 
   if (playBlack) {
-    //CRNE FIGURE*******************************************************************************************************************************
-    // CRNI TOP   *************************************************
     if (matrica[i][j] === 1) {
       const freeFields = getRockFreeFields(i, j);
 
@@ -1552,7 +1530,6 @@ function onFieldClick(i, j) {
       }
     }
 
-    //**CRNA DAMA************************************************************* */
 
     if (matrica[i][j] === 4) {
       const freeFields = getBlackQueenFreeFields(i, j);
@@ -1562,8 +1539,6 @@ function onFieldClick(i, j) {
       }
     }
 
-    //**CRNI LOVAC************************************************************* */
-
     if (matrica[i][j] === 3) {
       const freeFields = getBlackBishopFreeFields(i, j);
 
@@ -1571,7 +1546,6 @@ function onFieldClick(i, j) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 3);
       }
     }
-    //**CRNI KRALJ************************************************************* */
 
     if (matrica[i][j] === 5) {
       const freeFields = getBlackKingFreeFields(i, j);
@@ -1580,7 +1554,6 @@ function onFieldClick(i, j) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 5);
       }
     }
-    //**CRNI KONJ************************************************************* */
 
     if (matrica[i][j] === 2) {
       const freeFields = getBlackKnightFreeFields(i, j);
@@ -1589,7 +1562,6 @@ function onFieldClick(i, j) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 2);
       }
     }
-    //*CRNI PESAK******************************************************************** */
     if (matrica[i][j] === 6) {
       const freeFields = getBlackPawnFreeFields(i, j);
       for (const obj of freeFields) {
@@ -1597,10 +1569,7 @@ function onFieldClick(i, j) {
       }
     }
   }
-  //******************************************************************************************************************************************** */
   if (playWhite) {
-    //BELE FIGURE ***************************************************************************************************************************
-    // BELI TOP   *************************************************
 
     if (matrica[i][j] === 7) {
       const freeFields = getWhiteRockFreeFields(i, j);
@@ -1608,56 +1577,45 @@ function onFieldClick(i, j) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 7);
       }
     }
-    //**BELA DAMA************************************************************* */
 
     if (matrica[i][j] === 10) {
       const freeFields = getWhiteQueenFreeFields(i, j);
       for (const obj of freeFields) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 10);
       }
-      //*************************************************************************** */
     }
 
-    //**BELI LOVAC************************************************************* */
 
     if (matrica[i][j] === 9) {
       const freeFields = getWhiteBishopFreeFields(i, j);
       for (const obj of freeFields) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 9);
       }
-      //*************************************************************************** */
     }
-    //**BELI KRALJ************************************************************* */
 
     if (matrica[i][j] === 11) {
       const freeFields = getWhiteKingFreeFields(i, j);
       for (const obj of freeFields) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 11);
       }
-      //*************************************************************************** */
     }
-    //**BELI KONJ************************************************************* */
 
     if (matrica[i][j] === 8) {
       const freeFields = getWhiteKnightFreeFields(i, j);
       for (const obj of freeFields) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 8);
       }
-      //*************************************************************************** */
     }
     if (matrica[i][j] === 12) {
       const freeFields = getWhitePawnFreeFields(i, j);
       for (const obj of freeFields) {
         addClickListenerToField(move, obj.i, obj.j, i, j, 12);
       }
-      //*************************************************************************** */
     }
   }
 }
 
-//***************************************************************************************************************************************** */
 
-//Kretanje **************************************************************
 function move(b, c, i, j, figure) {
   matrica[i][j] = 0;
   matrica[b][c] = figure;
@@ -1672,7 +1630,6 @@ function move(b, c, i, j, figure) {
   loadChess();
 }
 
-//Slike figura************************************************************************
 function showFigure(i, j, field) {
   if (matrica[i][j] === 1) {
     let blackRook = document.createElement("img");
