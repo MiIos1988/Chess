@@ -7,8 +7,6 @@ body{
 }
 .chess{
     border: 1px solid black;
-    /* display: block; */
-
 }
 .chess > div{
     display: flex;
